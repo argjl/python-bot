@@ -2,7 +2,9 @@ import os
 import requests
 from flask import Flask, request
 from telegram import Bot, Update
-from telegram.ext import Dispatcher, MessageHandler, Filters
+from telegram.ext import ApplicationBuilder, MessageHandler, ContextTypes, filters
+
+
 
 app = Flask(__name__)
 
