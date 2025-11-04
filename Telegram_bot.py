@@ -1,5 +1,6 @@
 import os
 import requests
+import asyncio
 from flask import Flask, request
 from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, ContextTypes, filters
@@ -68,7 +69,7 @@ application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_m
 @app.route(f"/{TELEGRAM_TOKEN}", methods=["POST"])
 def telegram_webhook():
     update = Update.de_json(request.get_json(force=True), application.bot)
-    application.update_queue.put(update)
+    asyncio.create_task(application.update_queue.put(update))
     return "ok"
 
 # Health check
