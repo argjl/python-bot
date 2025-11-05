@@ -28,7 +28,7 @@ def query_gemini(prompt):
 
 # Create n8n workflow
 def create_n8n_workflow(name, nodes, connections):
-    headers = {"Authorization": f"Bearer {N8N_API_KEY}"}
+    headers = {"X-N8N-API-KEY": N8N_API_KEY}
     payload = {
         "name": name,
         "nodes": nodes,
