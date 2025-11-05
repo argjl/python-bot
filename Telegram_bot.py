@@ -69,7 +69,7 @@ application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_m
 @app.route(f"/{TELEGRAM_TOKEN}", methods=["POST"])
 def telegram_webhook():
     update = Update.de_json(request.get_json(force=True), application.bot)
-    asyncio.create_task(application.update_queue.put(update))
+    asyncio.run(application.update_queue.put(update))
     return "ok"
 
 # Health check
