@@ -65,6 +65,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # Create the Telegram application
 application = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
 application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+application.initialize()
+application.start()
 
 # Flask route for Telegram webhook
 @app.route(f"/{TELEGRAM_TOKEN}", methods=["POST"])
