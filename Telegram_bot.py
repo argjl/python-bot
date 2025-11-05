@@ -43,6 +43,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     msg = update.message
     chat_id = msg.chat.id
     text = msg.text
+    print("🔔 Message received:", update.message.text)
 
     prompt = f"Generate an n8n workflow JSON for this request: {text}. Return only nodes and connections."
     gemini_output = query_gemini(prompt)
@@ -68,8 +69,10 @@ application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_m
 # Flask route for Telegram webhook
 @app.route(f"/{TELEGRAM_TOKEN}", methods=["POST"])
 def telegram_webhook():
+    print("📬 Webhook triggered")
     update = Update.de_json(request.get_json(force=True), application.bot)
-    asyncio.run(application.update_queue.put(update))
+    import threading
+    threading.Thread(target=application.update_queue.put_nowait, args=(update,)).start()
     return "ok"
 
 # Health check
